@@ -48,17 +48,13 @@ class NumericalGreeks:
     @staticmethod
     def theta(price_fn, T, h=1e-5):
         """
-        Numerical Theta using finite differences.
+        Numerical Theta using finite differences (annualized).
 
-        Parameters
-        price_fn : callable
-            Pricing function with signature price_fn(T)
-        T : float
-            Time to maturity (years)
-        h : float
-            Small time step
+        Theta is defined as -dV/dT.
         """
         if T <= h:
-            # backward difference near expiry
-            return (price_fn(T) - price_fn(T - h)) / h
-        return (price_fn(T + h) - price_fn(T - h)) / (2 * h)
+            dV_dT = (price_fn(T) - price_fn(T - h)) / h
+        else:
+            dV_dT = (price_fn(T + h) - price_fn(T - h)) / (2 * h)
+
+        return -dV_dT
