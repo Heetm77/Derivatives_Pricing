@@ -23,3 +23,11 @@ class BlackScholesGreeks:
         """
         d1 = BlackScholes._d1(S, K, r, sigma, T)
         return norm.cdf(d1) - 1
+
+    @staticmethod
+    def gamma(S, K, r, sigma, T):
+        """
+        Gamma of a European option (same for call and put).
+        """
+        d1 = BlackScholes._d1(S, K, r, sigma, T)
+        return norm.pdf(d1) / (S * sigma * np.sqrt(T))
