@@ -19,3 +19,15 @@ class MonteCarloPricer:
         diffusion = sigma * np.sqrt(T) * Z
 
         return S0 * np.exp(drift + diffusion)
+
+    @staticmethod
+    def european_call(S0, K, r, sigma, T, n_paths, seed=None):
+        ST = MonteCarloPricer.simulate_terminal_price(S0, r, sigma, T, n_paths, seed)
+        payoff = np.maximum(ST - K, 0.0)
+        return np.exp(-r * T) * np.mean(payoff)
+
+    @staticmethod
+    def european_put(S0, K, r, sigma, T, n_paths, seed=None):
+        ST = MonteCarloPricer.simulate_terminal_price(S0, r, sigma, T, n_paths, seed)
+        payoff = np.maximum(K - ST, 0.0)
+        return np.exp(-r * T) * np.mean(payoff)
