@@ -40,3 +40,11 @@ class BlackScholes:
         d2 = BlackScholes._d2(S, K, r, sigma, T)
 
         return S * norm.cdf(d1) - K * np.exp(-r * T) * norm.cdf(d2)
+
+    @staticmethod
+    def put_price(S, K, r, sigma, T):
+        """
+        European put option price using put-call parity.
+        """
+        call = BlackScholes.call_price(S, K, r, sigma, T)
+        return call + K * np.exp(-r * T) - S

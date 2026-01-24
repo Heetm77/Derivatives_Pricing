@@ -47,3 +47,32 @@ def test_call_price_zero_volatility():
 
     expected = max(S - K * np.exp(-r * T), 0)
     assert np.isclose(price, expected, atol=1e-4)
+
+
+def test_put_price_at_the_money():
+    S = 100.0
+    K = 100.0
+    r = 0.05
+    sigma = 0.2
+    T = 1.0
+
+    price = BlackScholes.put_price(S, K, r, sigma, T)
+
+    # Known analytical value ≈ 5.5735
+    assert np.isclose(price, 5.5735, atol=1e-4)
+
+
+def test_put_call_parity():
+    S = 110.0
+    K = 100.0
+    r = 0.03
+    sigma = 0.25
+    T = 0.5
+
+    call = BlackScholes.call_price(S, K, r, sigma, T)
+    put = BlackScholes.put_price(S, K, r, sigma, T)
+
+    lhs = call + K * np.exp(-r * T)
+    rhs = put + S
+
+    assert np.isclose(lhs, rhs, atol=1e-6)
