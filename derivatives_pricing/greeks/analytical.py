@@ -39,3 +39,29 @@ class BlackScholesGreeks:
         """
         d1 = BlackScholes._d1(S, K, r, sigma, T)
         return S * np.sqrt(T) * norm.pdf(d1)
+
+    @staticmethod
+    def theta_call(S, K, r, sigma, T):
+        """
+        Theta of a European call option (annualized).
+        """
+        d1 = BlackScholes._d1(S, K, r, sigma, T)
+        d2 = BlackScholes._d2(S, K, r, sigma, T)
+
+        term1 = - (S * norm.pdf(d1) * sigma) / (2 * np.sqrt(T))
+        term2 = - r * K * np.exp(-r * T) * norm.cdf(d2)
+
+        return term1 + term2
+
+    @staticmethod
+    def theta_put(S, K, r, sigma, T):
+        """
+        Theta of a European put option (annualized).
+        """
+        d1 = BlackScholes._d1(S, K, r, sigma, T)
+        d2 = BlackScholes._d2(S, K, r, sigma, T)
+
+        term1 = - (S * norm.pdf(d1) * sigma) / (2 * np.sqrt(T))
+        term2 = r * K * np.exp(-r * T) * norm.cdf(-d2)
+
+        return term1 + term2
