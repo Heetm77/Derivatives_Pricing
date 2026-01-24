@@ -45,3 +45,26 @@ class MonteCarloGreeks:
         payoff_derivative = indicator * (ST / S0)
 
         return np.exp(-r * T) * np.mean(payoff_derivative)
+
+    @staticmethod
+    def vega_likelihood_ratio(
+            S0, K, r, sigma, T, n_paths, seed=None
+    ):
+        """
+        Monte Carlo Vega using Likelihood Ratio Method (LRM).
+        """
+        if seed is not None:
+            np.random.seed(seed)
+
+        Z = np.random.standard_normal(n_paths)
+
+        ST = S0 * np.exp(
+            (r - 0.5 * sigma ** 2) * T
+            + sigma * np.sqrt(T) * Z
+        )
+
+        payoff = np.maximum(ST - K, 0.0)
+
+        weight = (Z ** 2 - 1) / sigma - Z * np.sqrt(T)
+
+        return np.exp(-r * T) * np.mean(payoff * weight)
