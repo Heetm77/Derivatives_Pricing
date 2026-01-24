@@ -31,3 +31,11 @@ class BlackScholesGreeks:
         """
         d1 = BlackScholes._d1(S, K, r, sigma, T)
         return norm.pdf(d1) / (S * sigma * np.sqrt(T))
+
+    @staticmethod
+    def vega(S, K, r, sigma, T):
+        """
+        Vega of a European option.
+        """
+        d1 = BlackScholes._d1(S, K, r, sigma, T)
+        return S * np.sqrt(T) * norm.pdf(d1)
