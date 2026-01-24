@@ -44,3 +44,21 @@ class NumericalGreeks:
             Small perturbation
         """
         return (price_fn(sigma + h) - price_fn(sigma - h)) / (2 * h)
+
+    @staticmethod
+    def theta(price_fn, T, h=1e-5):
+        """
+        Numerical Theta using finite differences.
+
+        Parameters
+        price_fn : callable
+            Pricing function with signature price_fn(T)
+        T : float
+            Time to maturity (years)
+        h : float
+            Small time step
+        """
+        if T <= h:
+            # backward difference near expiry
+            return (price_fn(T) - price_fn(T - h)) / h
+        return (price_fn(T + h) - price_fn(T - h)) / (2 * h)
