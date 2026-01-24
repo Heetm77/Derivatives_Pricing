@@ -25,6 +25,23 @@ class MonteCarloGreeks:
 
     @staticmethod
     def delta_pathwise(
-        S0, K, r, sigma, T, n_paths, seed=None
+            S0, K, r, sigma, T, n_paths, seed=None
     ):
-        pass
+        """
+        Pathwise Monte Carlo estimator for Delta of a European call option.
+        """
+        if seed is not None:
+            np.random.seed(seed)
+
+        Z = np.random.standard_normal(n_paths)
+
+        ST = S0 * np.exp(
+            (r - 0.5 * sigma ** 2) * T
+            + sigma * np.sqrt(T) * Z
+        )
+
+        indicator = (ST > K).astype(float)
+
+        payoff_derivative = indicator * (ST / S0)
+
+        return np.exp(-r * T) * np.mean(payoff_derivative)
