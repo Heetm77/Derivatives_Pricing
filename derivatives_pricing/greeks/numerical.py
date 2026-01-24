@@ -18,3 +18,14 @@ class NumericalGreeks:
             Small perturbation
         """
         return (price_fn(S + h) - price_fn(S - h)) / (2 * h)
+
+    @staticmethod
+    def gamma(price_fn, S, h=1e-4):
+        """
+        Numerical Gamma using central difference.
+        """
+        return (
+            price_fn(S + h)
+            - 2 * price_fn(S)
+            + price_fn(S - h)
+        ) / (h ** 2)
