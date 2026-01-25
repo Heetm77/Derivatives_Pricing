@@ -8,11 +8,19 @@ class LongstaffSchwartzPricer:
 
     @staticmethod
     def american_put(
-        S0, K, r, sigma, T,
+        S0,
+        K,
+        r,
+        sigma,
+        T,
         n_paths=100_000,
         n_steps=50,
-        seed=None
+        basis_degree=2,
+        seed=None,
     ):
+        if basis_degree < 1:
+            raise ValueError("basis_degree must be >= 1")
+
         if seed is not None:
             np.random.seed(seed)
 
@@ -46,22 +54,23 @@ class LongstaffSchwartzPricer:
             if len(itm) == 0:
                 continue
 
-            X = np.column_stack([
-                np.ones(len(itm)),
-                S[itm, t],
-                S[itm, t] ** 2
-            ])
+            # Regression basis: [1, S, S^2, ..., S^basis_degree]
+            X = np.column_stack(
+                [S[itm, t] ** d for d in range(basis_degree + 1)]
+            )
 
             Y = discount * V[itm, t + 1]
 
             beta = np.linalg.lstsq(X, Y, rcond=None)[0]
             continuation = X @ beta
 
-            exercise = K - S[itm, t]
-            exercise_now = exercise > continuation
+            exercise_value = K - S[itm, t]
+            exercise_now = exercise_value > continuation
 
-            V[itm, t] = np.where(exercise_now, exercise, Y)
+            # Decide whether to exercise or continue
+            V[itm, t] = np.where(exercise_now, exercise_value, Y)
 
+            # Zero out future cashflows for exercised paths
             exercised_paths = itm[exercise_now]
             V[exercised_paths, t + 1:] = 0.0
 
