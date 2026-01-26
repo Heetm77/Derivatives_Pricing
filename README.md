@@ -4,6 +4,12 @@ A quantitative finance project focused on **derivatives pricing and risk modelin
 
 This repository is designed as a **portfolio-grade quant project**, emphasizing correctness, validation, and variance reduction techniques used in real trading and risk systems.
 
+## ⭐ Highlights
+- American option pricing via Longstaff–Schwartz Monte Carlo
+- Early-exercise boundary estimation and visualization
+- Regression overfitting diagnostics using path-split LSM
+- Benchmarked against binomial trees
+
 ---
 
 ## 📌 Models Implemented
