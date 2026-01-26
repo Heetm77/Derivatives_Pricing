@@ -35,9 +35,10 @@ This repository is designed as a **portfolio-grade quant project**, emphasizing 
 ## 🇺🇸 American Option Pricing (Longstaff–Schwartz)
 
 - Implemented American put pricing using the **Longstaff–Schwartz Monte Carlo (LSM)** algorithm
-- Regression-based continuation value estimation using polynomial basis functions
-- Extracted and visualized the **optimal early-exercise boundary**
-- Validated convergence with respect to number of paths and regression basis
+- Estimated continuation values via polynomial regression and analyzed **basis-degree sensitivity**
+- Extracted and visualized the **optimal early-exercise boundary** for American puts
+- Diagnosed **regression overfitting** by comparing in-sample LSM against **path-split (out-of-sample) LSM**
+- Demonstrated stabilization of option prices under path-splitting and validated results against a **binomial tree benchmark**
 
 ---
 
@@ -68,6 +69,7 @@ All Monte Carlo Greeks are validated against analytical benchmarks.
 - Monte Carlo prices converge to analytical values
 - Pathwise Delta converges faster than bump-and-revalue
 - Control variates significantly reduce estimator variance
+- Path-splitting reveals upward bias in high-degree LSM regressions due to overfitting
 
 ---
 
@@ -80,10 +82,9 @@ All Monte Carlo Greeks are validated against analytical benchmarks.
 ---
 
 ## 🔮 Planned Extensions
-- Monte Carlo convergence plots
-- LSM vs Binomial benchmark for American options
 - Implied volatility calibration
 - Path-dependent options (Asian options)
+- Stochastic volatility models (Heston)
 
 ---
 
